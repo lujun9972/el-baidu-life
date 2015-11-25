@@ -7,16 +7,16 @@
 * 爱生活,爱百度
 这个库封装了一些baidu api store中的API,提供一些有趣的功能. *使用前,请配置`baidu-life-API-KEY'为自己的apikey*
 
-+ baidu-life-get-weather :: 根据`LOCATION'获取天气信息
++ M-x baidu-life-get-weather :: 根据`LOCATION'获取天气信息
 
-+ baidu-life-get-mobile-location :: 获取手机号码`PHONE'的开户地
++ M-x baidu-life-get-mobile-location :: 获取手机号码`PHONE'的开户地
 
-+ baidu-life-ipsearch :: 获取`IP'位置信息
++ M-x baidu-life-ipsearch :: 获取`IP'位置信息
 
-+ baidu-life-idservice :: 获取身份证号`ID'信息
++ M-x baidu-life-idservice :: 获取身份证号`ID'信息
 
-+ baidu-life-md5decode  :: 破解MD5
++ M-x baidu-life-md5decode  :: 破解MD5
 
-+ baidu-life-waybillnotrace :: 查询快递信息
++ M-x baidu-life-waybillnotrace :: 查询快递信息
 
 
