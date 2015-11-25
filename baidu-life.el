@@ -152,6 +152,6 @@
 ;; 2015-11-19 20:38:49.0 CST-福建省漳州市公司 取件人: 欧阳慧娇 已收件
 
 
-(provide 'feature)
+(provide 'baidu-life)
 
 ;;; baidu-life ends here
