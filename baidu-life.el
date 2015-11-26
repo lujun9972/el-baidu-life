@@ -162,6 +162,17 @@
 
 ;; (baidu-life-shorten-url "http://www.github.com") => http://t.cn/aeQioO
 
+(defun baidu-life-to-pinyin (&optional chinese)
+  "查询汉字的拼音"
+  (interactive)
+  (let* ((chinese (or chinese (read-string "请输入要查询的中文:")))
+         (result-alist (baidu-life--json-read-from-url "http://apis.baidu.com/xiaogg/changetopinyin/topinyin"
+                                                       `((str . ,chinese)
+                                                         (type . "json")) 'GET)))
+    (cdr (assoc 'pinyin result-alist))))
+
+;; (baidu-life-to-pinyin "百度google") => bai du google
+
 
 (provide 'baidu-life)
 
