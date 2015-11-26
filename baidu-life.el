@@ -4,7 +4,7 @@
   "爱生活,爱百度"
   :prefix "baidu-life-")
 
-(defcustom baidu-life-API-KEY ""
+(defcustom baidu-life-API-KEY "fd96cfa5d662e295b9e6d8a32cd8182e"
   "apikey"
   :group 'baidu-life)
 
@@ -150,6 +150,17 @@
 ;; 2015-11-20 21:49:26.0 CST-江门转运中心公司 李嘉欣 已发出
 ;; 2015-11-19 23:33:03.0 CST-福建省漳州市公司 何美玉 已打包
 ;; 2015-11-19 20:38:49.0 CST-福建省漳州市公司 取件人: 欧阳慧娇 已收件
+
+(defun baidu-life-shorten-url (&optional url_long)
+  "长url转短url "
+  (interactive)
+  (let* ((url_long (or url_long (read-string "请输入要转换的长URL:")))
+         (result-alist (baidu-life--json-read-from-url "http://apis.baidu.com/3023/shorturl/shorten"
+                                                       `((url_long . ,url_long)) 'GET))
+         (ret-data (aref (cdr (assoc 'urls result-alist)) 0)))
+    (cdr (assoc 'url_short ret-data))))
+
+;; (baidu-life-shorten-url "http://www.github.com") => http://t.cn/aeQioO
 
 
 (provide 'baidu-life)
