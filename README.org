@@ -19,4 +19,8 @@
 
 + M-x baidu-life-waybillnotrace :: 查询快递信息
 
++ M-x baidu-life-shorten-url :: 长url转短url
+
++ M-x baidu-life-to-pinyin :: 查询汉字的拼音
+
 
