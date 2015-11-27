@@ -4,6 +4,7 @@
 
 ;; Author: DarkSun <lujun9972@gmail.com>
 ;; Keywords: lisp, baidu
+;; Version:0.1
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -36,13 +37,14 @@
 
 (require 'cl)
 (require 'url)
-(defgroup baidu-life nil
-  "爱生活,爱百度"
-  :prefix "baidu-life-")
+(eval-when-compile
+  (defgroup baidu-life nil
+    "爱生活,爱百度"
+    :prefix "baidu-life-")
 
-(defcustom baidu-life-API-KEY "fd96cfa5d662e295b9e6d8a32cd8182e"
-  "apikey"
-  :group 'baidu-life)
+  (defcustom baidu-life-API-KEY ""
+    "apikey"
+    :group 'baidu-life))
 
 (defcustom baidu-life-timed-out 5
   "timed out  seconds to request baidu api")
@@ -220,4 +222,4 @@
 
 (provide 'baidu-life)
 
-;;; baidu-life ends here
+;;; baidu-life.el ends here
