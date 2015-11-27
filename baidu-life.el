@@ -8,6 +8,9 @@
   "apikey"
   :group 'baidu-life)
 
+(defcustom baidu-life-timed-out 5
+  "timed out  seconds to request baidu api")
+
 (defmacro baidu-life--with-api-key (api-key &rest body)
   (declare (indent defun))
   (let ((apikey (cond ((stringp api-key)
@@ -39,27 +42,28 @@
     (url-retrieve-synchronously url)))
 
 (cl-defun baidu-life--json-read-from-url (url args &optional (type 'POST))
-  (let (json-object)
-    (with-current-buffer (baidu-life--with-api-key baidu-life-API-KEY
-                           (baidu-life--retrieve-url-synchronously url args type))
-      (let (charset
-            json-string)
-        (goto-char (point-min))
-        (when (search-forward "charset=" nil t)
-          (setq charset (intern (downcase (buffer-substring-no-properties (point) (progn (end-of-line)
-                                                                                         (point)))))))
-        (goto-char (point-min))
-        (search-forward-regexp "^$")
-        (setq json-string (buffer-substring (point) (point-max)))
-        (when charset
-          (setq json-string (decode-coding-string json-string charset)))
-        (setq json-object (json-read-from-string json-string))
-        (kill-buffer)))
-    (let ((errNum (cdr (assoc 'errNum json-object)))
-          (errMsg (cdr (assoc 'errMsg json-object))))
-      (if (= 0 errNum)
-          json-object
-        (error errMsg)))))
+  (with-timeout (baidu-life-timed-out (error "baidu life timed out"))
+    (let (json-object)
+      (with-current-buffer (baidu-life--with-api-key baidu-life-API-KEY
+                                                     (baidu-life--retrieve-url-synchronously url args type))
+        (let (charset
+              json-string)
+          (goto-char (point-min))
+          (when (search-forward "charset=" nil t)
+            (setq charset (intern (downcase (buffer-substring-no-properties (point) (progn (end-of-line)
+                                                                                           (point)))))))
+          (goto-char (point-min))
+          (search-forward-regexp "^$")
+          (setq json-string (buffer-substring (point) (point-max)))
+          (when charset
+            (setq json-string (decode-coding-string json-string charset)))
+          (setq json-object (json-read-from-string json-string))
+          (kill-buffer)))
+      (let ((errNum (cdr (assoc 'errNum json-object)))
+            (errMsg (cdr (assoc 'errMsg json-object))))
+        (if (= 0 errNum)
+            json-object
+          (error errMsg))))))
 
 
 (defun baidu-life-get-weather (&optional location)
