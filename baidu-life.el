@@ -41,7 +41,7 @@
   "爱生活,爱百度"
   :prefix "baidu-life-")
 
-(defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
+(defcustom baidu-life-api-key ""
   "apikey"
   :group 'baidu-life)
 
@@ -218,6 +218,26 @@
     (cdr (assoc 'pinyin result-alist))))
 
 ;; (baidu-life-to-pinyin "百度google") => bai du google
+
+(defun baidu-life-translate (&optional query)
+  "汉英翻译"
+  (interactive)
+  (let* ((query (or query (read-string "请输入要翻译的英文/中文:")))
+         (from (if (string-match-p "\\cc" query)
+                   "zh"
+                 "en"))
+         (to (if (string-match-p "\\cc" query)
+                 "en"
+               "zh"))
+         (result-alist (baidu-life--json-read-from-url "http://apis.baidu.com/apistore/tranlateservice/translate"
+                                                       `((query . ,query)
+                                                         (from . ,from)
+                                                         (to . ,to)) 'GET))
+         (ret-data (cdr (assoc 'retData result-alist))))
+    (cdr (assoc 'dst (aref (cdr (assoc 'trans_result ret-data)) 0)))))
+
+;; (baidu-life-translate "hello world") => 你好世界
+;; (baidu-life-translate "你好") => Hello
 
 
 (provide 'baidu-life)
