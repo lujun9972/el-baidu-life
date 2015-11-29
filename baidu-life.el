@@ -37,27 +37,27 @@
 
 (require 'cl)
 (require 'url)
-(eval-when-compile
-  (defgroup baidu-life nil
-    "爱生活,爱百度"
-    :prefix "baidu-life-")
+(defgroup baidu-life nil
+  "爱生活,爱百度"
+  :prefix "baidu-life-")
 
-  (defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
-    "apikey"
-    :group 'baidu-life))
+(defcustom baidu-life-api-key ""
+  "apikey"
+  :group 'baidu-life)
 
 (defcustom baidu-life-timed-out 5
   "timed out  seconds to request baidu api")
 
 (defmacro baidu-life--with-api-key (api-key &rest body)
   (declare (indent defun))
-  (let ((apikey (cond ((stringp api-key)
-                       api-key)
-                      ((symbolp api-key)
-                       (symbol-value api-key))
-                      (t (error "not valid api-key")))))
-    `(let ((url-request-extra-headers
-            ',(cons `("apikey" . ,apikey) url-request-extra-headers)))
+  (let ((apikey (gensym)))
+    `(let* ((,apikey (cond ((stringp ,api-key)
+                            ,api-key)
+                           ((symbolp ,api-key)
+                            (symbol-value ,api-key))
+                           (t (error "not valid api-key"))))
+            (url-request-extra-headers
+             (cons (cons "apikey"  (symbol-value ,apikey)) url-request-extra-headers)))
        ,@body)))
 
 (cl-defun baidu-life--retrieve-url-synchronously (url args &optional (type 'POST ))
@@ -83,7 +83,7 @@
   (with-timeout (baidu-life-timed-out (error "baidu life timed out"))
     (let (json-object)
       (with-current-buffer (baidu-life--with-api-key baidu-life-api-key
-                                                     (baidu-life--retrieve-url-synchronously url args type))
+                             (baidu-life--retrieve-url-synchronously url args type))
         (let (charset
               json-string)
           (goto-char (point-min))
@@ -182,10 +182,10 @@
          (result-alist (elt (cdr (assoc 'data result-alist)) 0))
          (trace-array (cdr (assoc 'wayBills result-alist)))
          (trace-list (mapcar (lambda (trace-alist)
-                             (format "%s-%s"
-                                     (cdr (assoc 'time trace-alist))
-                                     (cdr (assoc 'processInfo trace-alist))))
-                           trace-array)))
+                               (format "%s-%s"
+                                       (cdr (assoc 'time trace-alist))
+                                       (cdr (assoc 'processInfo trace-alist))))
+                             trace-array)))
     (mapconcat 'identity trace-list "\n")))
 
 ;; (baidu-life-waybillnotrace "YT" "805121891484")
