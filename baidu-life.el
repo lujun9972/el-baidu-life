@@ -42,7 +42,7 @@
     "爱生活,爱百度"
     :prefix "baidu-life-")
 
-  (defcustom baidu-life-API-KEY ""
+  (defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
     "apikey"
     :group 'baidu-life))
 
@@ -82,7 +82,7 @@
 (cl-defun baidu-life--json-read-from-url (url args &optional (type 'POST))
   (with-timeout (baidu-life-timed-out (error "baidu life timed out"))
     (let (json-object)
-      (with-current-buffer (baidu-life--with-api-key baidu-life-API-KEY
+      (with-current-buffer (baidu-life--with-api-key baidu-life-api-key
                                                      (baidu-life--retrieve-url-synchronously url args type))
         (let (charset
               json-string)
