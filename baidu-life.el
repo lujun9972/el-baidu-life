@@ -41,7 +41,7 @@
   "爱生活,爱百度"
   :prefix "baidu-life-")
 
-(defcustom baidu-life-api-key ""
+(defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
   "apikey"
   :group 'baidu-life)
 
@@ -50,15 +50,13 @@
 
 (defmacro baidu-life--with-api-key (api-key &rest body)
   (declare (indent defun))
-  (let ((apikey (gensym)))
-    `(let* ((,apikey (cond ((stringp ,api-key)
-                            ,api-key)
-                           ((symbolp ,api-key)
-                            (symbol-value ,api-key))
-                           (t (error "not valid api-key"))))
-            (url-request-extra-headers
-             (cons (cons "apikey"  (symbol-value ,apikey)) url-request-extra-headers)))
-       ,@body)))
+  `(let* ((url-request-extra-headers
+           (cons (cons "apikey"  (cond ((stringp ,api-key)
+                                        ,api-key)
+                                       ((symbolp ,api-key)
+                                        (symbol-value ,api-key))
+                                       (t (error "not valid api-key")))) url-request-extra-headers)))
+     ,@body))
 
 (cl-defun baidu-life--retrieve-url-synchronously (url args &optional (type 'POST ))
   (let* ((url-request-method (if (eq 'POST type)
@@ -97,8 +95,10 @@
             (setq json-string (decode-coding-string json-string charset)))
           (setq json-object (json-read-from-string json-string))
           (kill-buffer)))
-      (let ((errNum (cdr (assoc 'errNum json-object)))
-            (errMsg (cdr (assoc 'errMsg json-object))))
+      (let ((errNum (or (cdr (assoc 'errNum json-object))
+                        0))
+            (errMsg (or (cdr (assoc 'errMsg json-object))
+                        "")))
         (if (= 0 errNum)
             json-object
           (error errMsg))))))
