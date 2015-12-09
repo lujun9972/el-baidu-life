@@ -174,7 +174,7 @@
   "查询快递信息
 
 `EXPRESSCODE'为快递公司代码. （圆通：YT，申通：ST，中通：ZT，邮政EMS: YZEMS，天天：TT，优速：YS，快捷：KJ，全峰：QF，增益：ZY）
-`billno'为快递公司的订单号."
+`BILLNO'为快递公司的订单号."
   (interactive)
   (let* ((expresscode (or expresscode (read-string "请输入快递公司代号:")))
          (billno (or billno (read-string "请输入订单号:")))
