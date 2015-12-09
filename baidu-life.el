@@ -5,6 +5,7 @@
 ;; Author: DarkSun <lujun9972@gmail.com>
 ;; Keywords: lisp, baidu
 ;; Version:0.1
+;; Package-Requires: ((cl-lib "0.5"))
 
 ;; This file is NOT part of GNU Emacs.
 
