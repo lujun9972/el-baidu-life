@@ -35,13 +35,14 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'url)
+(require 'json)
 (defgroup baidu-life nil
   "爱生活,爱百度"
   :prefix "baidu-life-")
 
-(defcustom baidu-life-api-key ""
+(defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
   "apikey"
   :group 'baidu-life)
 
