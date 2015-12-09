@@ -43,11 +43,11 @@
   "爱生活,爱百度"
   :prefix "baidu-life-")
 
-(defcustom baidu-life-api-key "fd96cfa5d662e295b9e6d8a32cd8182e"
+(defcustom baidu-life-api-key ""
   "apikey"
   :group 'baidu-life)
 
-(defcustom baidu-life-timed-out 5
+(defcustom baidu-life-timed-out 10 
   "timed out  seconds to request baidu api")
 
 (defmacro baidu-life--with-api-key (api-key &rest body)
@@ -170,7 +170,7 @@
 
 
 
-(defun baidu-life-waybillnotrace (&optional expresscode billno)
+(defun baidu-life-waybillnotrace (&optional billno expresscode)
   "查询快递信息
 
 `EXPRESSCODE'为快递公司代码. （圆通：YT，申通：ST，中通：ZT，邮政EMS: YZEMS，天天：TT，优速：YS，快捷：KJ，全峰：QF，增益：ZY）
@@ -190,7 +190,7 @@
                              trace-array)))
     (mapconcat 'identity trace-list "\n")))
 
-;; (baidu-life-waybillnotrace "YT" "805121891484")
+;; (baidu-life-waybillnotrace "805121891484" "YT" )
 ;; =>
 ;; 2015-11-23 19:47:38.0 CST-广东省珠海市唐家金鼎公司 签收人: 本人签收 已签收
 ;; 2015-11-21 09:00:29.0 CST-广东省珠海市唐家金鼎公司 派件人: 赵凯 派件中
