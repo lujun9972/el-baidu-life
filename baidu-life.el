@@ -110,12 +110,16 @@
   "根据`LOCATION'获取天气信息"
   (interactive)
   (let* ((location (or location (read-string "您想查询那座城市的天气,请输入对应的拼音:")))
+         (location (if (string-match-p "\\cc" location)
+                       (replace-regexp-in-string "[[:blank:]]" ""  (baidu-life-to-pinyin location))
+                     location))
          (weather-alist (baidu-life--json-read-from-url "http://apis.baidu.com/apistore/weatherservice/weather"
                                                         `((citypinyin . ,location)) 'GET ))
          (ret-data (cdr (assoc 'retData weather-alist))))
     (format "%s:%s" (cdr (assoc 'weather ret-data))
             (cdr (assoc 'WS ret-data)))))
 ;; (baidu-life-get-weather "dongguan") => 阴:3-4级(10~17m/h)
+;; (baidu-life-get-weather "东莞") => 阴:3-4级(10~17m/h)
 
 (defun baidu-life-get-mobile-location (&optional phone)
   "获取手机号码`PHONE'的开户地"
