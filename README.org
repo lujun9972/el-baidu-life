@@ -5,6 +5,8 @@
 #+OPTIONS: ^:{}
 
 * 爱生活,爱百度
+*注意：由于baidu API发生变动，这个包已经无效了*
+
 这个库封装了一些baidu api store中的API,提供一些有趣的功能. *使用前,请配置`baidu-life-API-KEY'为自己的apikey*
 
 + M-x baidu-life-get-weather :: 根据`LOCATION'获取天气信息
